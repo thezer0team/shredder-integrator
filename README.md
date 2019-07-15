@@ -1,9 +1,9 @@
-## Unnamed Calendar Sync Project
-This is a MVP for basic calendar sync between multiple platforms. 
+## Shredder Integrator
+Integration service for pulling from various API's and POST'ing to backend service to support calendar consolidation. 
 
 i.e. 
 
-ThisApp
+Integrator
 ---> iCal API
 ---> Google Cal API
 ---> Facebook Events/Calendar API
