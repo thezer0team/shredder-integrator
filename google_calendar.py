@@ -46,11 +46,12 @@ def grab_calendars(argv):
     return calendars
 
 
-def verify_events(*args):
+def transform_events(*args):
     '''
-    Function accepts an event 'dict' and 'value' and verifies the value exists and isn't None
+    Function accepts dictionary with calendars and events and transforms the object into a normalized event mapping
     '''
     values_list = ['summary', 'description', 'start', 'end', 'status', 'attendees']
+    events = []
 
     for event in args:
         for item in values_list:
@@ -59,10 +60,11 @@ def verify_events(*args):
 
                 if event[item] is not None and event[item] is not "":
                     print(event[item])
+                    events.append(event[item])
 
             except KeyError as keyerror:
                 print('[!] KeyError: {}'.format(keyerror))
-
+    return events
 
 def grab_events(argv, calendars):
     '''
@@ -74,7 +76,10 @@ def grab_events(argv, calendars):
         argv, 'calendar', 'v3', __doc__, __file__,
         scope='https://www.googleapis.com/auth/calendar.readonly')
 
-    events = []
+    # Init our data structure to store calendar and events
+    mapping = {}
+
+    # Get currnet timestamp in ISO format and with TZ info for Google API
     current_date_TS = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
 
     for calendar in calendars:
@@ -86,23 +91,18 @@ def grab_events(argv, calendars):
                     timeMin=current_date_TS,
                     pageToken=page_token).execute()
 
-                # for calendar_events_entry in calendar_events['items']:
-                #     verify_event_object(calendar_events_entry, 'summary')
-                #     verify_event_object(calendar_events_entry, 'start')
-                #     verify_event_object(calendar_events_entry, 'end')
-                #     verify_event_object(calendar_events_entry, 'description')
-                #     verify_event_object(calendar_events_entry, 'status')
-                #     verify_event_object(calendar_events_entry, 'attendees')
-                events = map(verify_events, calendar_events['items'])
-
+                mapping[calendar] = calendar_events
+                     
                 page_token = calendar_events.get('nextPageToken')
                 if not page_token:
                     break
+
         except client.AccessTokenRefreshError:
             print('The credentials have been revoked or expired, please re-run'
                 'the application to re-authorize.')
-
+    return mapping
 
 if __name__ == '__main__':
     calendars = grab_calendars(sys.argv)
     events = grab_events(sys.argv, calendars)
+    print(events)
