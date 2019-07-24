@@ -9,7 +9,36 @@ import sys
 from oauth2client import client
 from googleapiclient import sample_tools
 import datetime
+import logging
+from time import strftime,gmtime
 
+logger = logging.getLogger(__name__)
+
+# Todays date
+today = strftime("%Y-%m-%d", gmtime())
+
+# Setup our handlers, one for console and one for file
+c_handler = logging.StreamHandler()
+f_handler = logging.FileHandler('{}_{}.log'.format(today,__name__))
+
+# Set Logging Levels per Handler
+c_handler.setLevel(logging.WARNING)
+f_handler.setLevel(logging.ERROR)
+
+# Create our formatter object
+c_format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+f_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# Set our formatter on each handler
+c_handler.setFormatter(c_format)
+f_handler.setFormatter(f_format)
+
+# Add the handlers for the logger
+logger.addHandler(c_handler)
+logger.addHandler(f_handler)
+
+#logger.warning('This is a warning')
+#logger.error('This is an error')
 
 def grab_calendars(argv):
     '''
@@ -22,6 +51,7 @@ def grab_calendars(argv):
         argv, 'calendar', 'v3', __doc__, __file__,
         scope='https://www.googleapis.com/auth/calendar.readonly')
 
+    # Init our list to store calendars
     calendars = []
 
     try:
@@ -42,6 +72,7 @@ def grab_calendars(argv):
     except client.AccessTokenRefreshError:
         print('The credentials have been revoked or expired, please re-run'
               'the application to re-authorize.')
+        logger.error('The credentials have been revoked or expired')
 
     return calendars
 
@@ -64,11 +95,12 @@ def transform_events(*args):
 
             except KeyError as keyerror:
                 print('[!] KeyError: {}'.format(keyerror))
+                logger.error('Key Error encountered', exc_info=True)
     return events
 
 def grab_events(argv, calendars):
     '''
-    Provide list of calendar IDs to func and this func collects events
+    Provide list of calendar IDs to function and this function collects events
     '''
 
     # Authenticate and construct service.
@@ -100,6 +132,8 @@ def grab_events(argv, calendars):
         except client.AccessTokenRefreshError:
             print('The credentials have been revoked or expired, please re-run'
                 'the application to re-authorize.')
+            logger.error('The credentials have been revoked or expired')
+            
     return mapping
 
 if __name__ == '__main__':
