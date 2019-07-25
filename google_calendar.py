@@ -179,12 +179,22 @@ def post_events(*args):
     '''
     Function to HTTP POST events to backend service API
     '''
+    backend_api_url = 'https://httpbin.org/post'
+
     try:
-        post = requests.post('https://httpbin.org/post', data = args)
+        post = requests.post(backend_api_url, data = args)
 
     except Exception as e:
-        print('Unable to perform HTTP POST to endpoint, result is: {}'.format(e))
-        logger.error('Failed to POST to backend service API') 
+        print('Unable to perform HTTP POST to endpoint, exception is: {}'.format(e))
+        logger.error('Failed to POST to backend service API')
+
+    if post.status_code == '200':
+        logging.info('Status Code is 200 for URL {}'.format(backend_api_url))
+        return True
+    else:
+        print('Error encountered, HTTP response code is not 200')
+        logging.error('Error - Status code for URL is {}'.format(post.status_code))
+        return False
 
 if __name__ == '__main__':
     calendars = grab_calendars(sys.argv)
