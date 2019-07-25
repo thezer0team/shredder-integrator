@@ -182,11 +182,9 @@ def post_events(*args):
     try:
         post = requests.post('https://httpbin.org/post', data = args)
 
-    except 
-
-
-
-    pass
+    except Exception as e:
+        print('Unable to perform HTTP POST to endpoint, result is: {}'.format(e))
+        logger.error('Failed to POST to backend service API') 
 
 if __name__ == '__main__':
     calendars = grab_calendars(sys.argv)
