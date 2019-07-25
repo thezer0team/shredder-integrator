@@ -10,8 +10,8 @@ Let us handle the process of making sure it ends up on whatever platform they us
 python google_calendar.py
 
 ## Development
-git clone https://github.com/thezer0team/shredder-integrator.git
-pipenv install
+- git clone https://github.com/thezer0team/shredder-integrator.git
+- pipenv install
 
 ### Minimum Python Version
 3.7+
