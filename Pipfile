@@ -7,7 +7,7 @@ name = "pypi"
 "oauth2client" = "*"
 pytz = "*"
 requests = "*"
-googleapiclient = "*"
+google-api-python-client = "*"
 
 [dev-packages]
 "flake8" = "*"
