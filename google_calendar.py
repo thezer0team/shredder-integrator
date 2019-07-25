@@ -11,6 +11,7 @@ from googleapiclient import sample_tools
 import datetime
 import logging
 from time import strftime,gmtime
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -81,7 +82,15 @@ def transform_events(*args):
     '''
     Function accepts dictionary with calendars and events and transforms the object into a normalized event mapping
     '''
-    values_list = ['summary', 'description', 'start', 'end', 'status', 'attendees']
+    values_list = [
+        'summary', 
+        'description', 
+        'start', 
+        'end', 
+        'status', 
+        'attendees'
+        ]
+
     events = []
 
     for event in args:
@@ -135,6 +144,49 @@ def grab_events(argv, calendars):
             logger.error('The credentials have been revoked or expired')
             
     return mapping
+
+def verify_user_exists(username):
+    ''' 
+    Pseudo code to check if an API endpoint returns true
+    '''
+    pass
+
+def request_new_userID(email):
+    '''
+    Function to request new User ID be created from user email
+    '''
+    pass
+
+def verify_user_appcalID(userid):
+    '''
+    Function to verify if user has an existing AppCalID
+    '''
+    pass
+
+def request_new_appcalID(userid):
+    '''
+    Function to request new AppCalID if a user does not have one
+    '''
+    pass
+
+def verify_platform_calendar(userid, appCalID):
+    '''
+    Function to verify this calendar exists and is associated with the appCalID
+    '''
+    pass
+
+def post_events(*args):
+    '''
+    Function to HTTP POST events to backend service API
+    '''
+    try:
+        post = requests.post('https://httpbin.org/post', data = args)
+
+    except 
+
+
+
+    pass
 
 if __name__ == '__main__':
     calendars = grab_calendars(sys.argv)
