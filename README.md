@@ -10,12 +10,13 @@ Let us handle the process of making sure it ends up on whatever platform they us
 python google_calendar.py
 
 ## Development
-- git clone https://github.com/thezer0team/shredder-integrator.git
-- pipenv install
+1. git clone https://github.com/thezer0team/shredder-integrator.git
+2. pipenv install
+3. Ensure you have an OAuth approved application created and client_id and client_secret in a client_secrets.json file. Sample here: https://github.com/googleapis/google-api-python-client/blob/master/samples/calendar_api/client_secrets.json
 
 ### Minimum Python Version
 3.7+
 
 ### Built With
-VSCode
-Pipenv
+- VSCode
+- Pipenv
