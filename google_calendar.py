@@ -183,6 +183,7 @@ def post_events(*args):
 
     try:
         post = requests.post(backend_api_url, data = args)
+        logging.info('HTTP POST with event payload sent to {}'.format(backend_api_url))
 
     except Exception as e:
         print('Unable to perform HTTP POST to endpoint, exception is: {}'.format(e))
@@ -200,3 +201,4 @@ if __name__ == '__main__':
     calendars = grab_calendars(sys.argv)
     events = grab_events(sys.argv, calendars)
     print(events)
+    #post_events(events)
