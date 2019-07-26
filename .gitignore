@@ -6,3 +6,6 @@ client_secrets.json
 
 # Ignore Log Files
 *.log
+
+# Ignore Pytest Cache
+.pytest_cache
