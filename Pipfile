@@ -9,6 +9,7 @@ pytz = "*"
 requests = "*"
 google-api-python-client = "*"
 pytest = "*"
+cerberus = "*"
 
 [dev-packages]
 "flake8" = "*"
