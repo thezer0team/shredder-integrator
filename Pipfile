@@ -8,6 +8,7 @@ name = "pypi"
 pytz = "*"
 requests = "*"
 google-api-python-client = "*"
+pytest = "*"
 
 [dev-packages]
 "flake8" = "*"
