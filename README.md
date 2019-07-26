@@ -7,7 +7,7 @@ One place for all your disparate calendar systems. Want to send an event to your
 Let us handle the process of making sure it ends up on whatever platform they use and focus on finding time and spending it with people you care about.
 
 ## Running via CLI
-python google_calendar.py
+`python google_calendar.py`
 
 ## Development
 1. git clone https://github.com/thezer0team/shredder-integrator.git
