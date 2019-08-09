@@ -13,6 +13,7 @@ import logging
 from time import strftime,gmtime
 import requests
 import pytest
+import pprint
 
 logger = logging.getLogger(__name__)
 
@@ -81,7 +82,7 @@ def grab_calendars(argv):
 
 def transform_events(*args):
     '''
-    Function accepts dictionary with calendars and events and transforms the object into a normalized event mapping
+    Function accepts dictionary within a dictionary and transforms the object into a flattened data structure
     '''
     values_list = [
         'summary', 
@@ -92,6 +93,7 @@ def transform_events(*args):
         'attendees'
         ]
 
+    # Init a list of dictionaries (events)
     events = []
 
     for event in args:
@@ -99,9 +101,9 @@ def transform_events(*args):
             try:
                 event.get(item)
 
-                if event[item] is not None and event[item] is not "":
-                    print(event[item])
-                    events.append(event[item])
+                #if event[item] is not None and event[item] is not "":
+                #    print(event[item])
+                #    events.append(event[item])
 
             except KeyError as keyerror:
                 print('[!] KeyError: {}'.format(keyerror))
@@ -126,18 +128,18 @@ def grab_events(argv, calendars):
 
     for calendar in calendars:
         try:
-            page_token = None
+            page_token = None              
             while True:
                 calendar_events = service.events().list(
                     calendarId=calendar,
                     timeMin=current_date_TS,
                     pageToken=page_token).execute()
-
-                mapping[calendar] = calendar_events
-                     
+                
                 page_token = calendar_events.get('nextPageToken')
                 if not page_token:
                     break
+
+            mapping[calendar] = calendar_events
 
         except client.AccessTokenRefreshError:
             print('The credentials have been revoked or expired, please re-run'
@@ -181,25 +183,26 @@ def post_events(*args):
     Function to HTTP POST events to backend service API
     '''
     backend_api_url = 'https://httpbin.org/post'
+    print(args)
 
     try:
         post = requests.post(backend_api_url, data = args)
-        logging.info('HTTP POST with event payload sent to {}'.format(backend_api_url))
+        logger.info('HTTP POST with event payload sent to {}'.format(backend_api_url))
 
     except Exception as e:
-        print('Unable to perform HTTP POST to endpoint, exception is: {}'.format(e))
-        logger.error('Failed to POST to backend service API')
+        logger.error('Failed to POST to backend service API, exception is: {}'.format(e))
 
-    if post.status_code == '200':
-        logging.info('Status Code is 200 for URL {}'.format(backend_api_url))
+    if post.status_code == 200:
+        logger.info('Info - Status Code is 200 for URL: {}'.format(backend_api_url))
         return True
     else:
-        print('Error encountered, HTTP response code is not 200')
-        logging.error('Error - Status code for URL is {}'.format(post.status_code))
+        logger.error('Error - Status code for URL is {}'.format(post.status_code))
         return False
 
 if __name__ == '__main__':
     calendars = grab_calendars(sys.argv)
     events = grab_events(sys.argv, calendars)
-    print(events)
+    normalized_events = transform_events(events)
+    pprint.pprint(normalized_events)
+    #pprint.pprint(events)
     #post_events(events)

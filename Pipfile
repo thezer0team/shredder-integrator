@@ -10,6 +10,7 @@ requests = "*"
 google-api-python-client = "*"
 pytest = "*"
 cerberus = "*"
+pytest-cov = "*"
 
 [dev-packages]
 "flake8" = "*"
