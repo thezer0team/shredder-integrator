@@ -40,8 +40,8 @@ f_handler.setFormatter(f_format)
 logger.addHandler(c_handler)
 logger.addHandler(f_handler)
 
-#logger.warning('This is a warning')
-#logger.error('This is an error')
+# logger.warning('This is a warning')
+# logger.error('This is an error')
 
 def grab_calendars(argv):
     '''
@@ -85,11 +85,11 @@ def transform_events(*args):
     Function accepts dictionary within a dictionary and transforms the object into a flattened data structure
     '''
     values_list = [
-        'summary', 
-        'description', 
-        'start', 
-        'end', 
-        'status', 
+        'summary',
+        'description',
+        'start',
+        'end',
+        'status',
         'attendees'
         ]
 
@@ -134,7 +134,7 @@ def grab_events(argv, calendars):
                     calendarId=calendar,
                     timeMin=current_date_TS,
                     pageToken=page_token).execute()
-                
+
                 page_token = calendar_events.get('nextPageToken')
                 if not page_token:
                     break
@@ -145,7 +145,7 @@ def grab_events(argv, calendars):
             print('The credentials have been revoked or expired, please re-run'
                 'the application to re-authorize.')
             logger.error('The credentials have been revoked or expired')
-            
+
     return mapping
 
 def verify_user_exists(username):
