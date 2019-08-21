@@ -62,6 +62,7 @@ def grab_calendars(argv):
         while True:
             calendar_list = service.calendarList().list(
                 pageToken=page_token).execute()
+            logger.debug("[^] Calendar list method executed: {}".format(calendar_list))
 
             for calendar_list_entry in calendar_list['items']:
 
@@ -69,6 +70,7 @@ def grab_calendars(argv):
                     break
                 else:
                     calendars.append(calendar_list_entry['id'])
+                    logger.debug("Added calendar {} to calendar list".format(calendar_list_entry))
             page_token = calendar_list.get('nextPageToken')
             if not page_token:
                 break
