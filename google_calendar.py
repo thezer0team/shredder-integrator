@@ -14,6 +14,7 @@ from time import strftime,gmtime
 import requests
 import pytest
 import pprint
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -40,8 +41,7 @@ f_handler.setFormatter(f_format)
 logger.addHandler(c_handler)
 logger.addHandler(f_handler)
 
-# logger.warning('This is a warning')
-# logger.error('This is an error')
+DEBUG_MODE = True
 
 def grab_calendars(argv):
     '''
@@ -50,9 +50,13 @@ def grab_calendars(argv):
     '''
 
     # Authenticate and construct service.
-    service, flags = sample_tools.init(
-        argv, 'calendar', 'v3', __doc__, __file__,
-        scope='https://www.googleapis.com/auth/calendar.readonly')
+    try:
+        service, flags = sample_tools.init(
+            argv, 'calendar', 'v3', __doc__, __file__,
+            scope='https://www.googleapis.com/auth/calendar.readonly')
+        logger.debug("[+] Authenticated to Google API Endpoint")
+    except Exception as e:
+        logger.debug("[!] Unable to construct Google API Service object: {}".format(e))
 
     # Init our list to store calendars
     calendars = []
@@ -74,6 +78,7 @@ def grab_calendars(argv):
             page_token = calendar_list.get('nextPageToken')
             if not page_token:
                 break
+
     except client.AccessTokenRefreshError:
         print('The credentials have been revoked or expired, please re-run'
               'the application to re-authorize.')
@@ -82,7 +87,7 @@ def grab_calendars(argv):
     return calendars
 
 
-def transform_events(*args):
+def transform_events(events):
     '''
     Function accepts dictionary within a dictionary and transforms the object into a flattened data structure
     '''
@@ -94,23 +99,13 @@ def transform_events(*args):
         'status',
         'attendees'
         ]
-
-    # Init a list of dictionaries (events)
-    events = []
-
-    for event in args:
-        for item in values_list:
-            try:
-                event.get(item)
-
-                #if event[item] is not None and event[item] is not "":
-                #    print(event[item])
-                #    events.append(event[item])
-
-            except KeyError as keyerror:
-                print('[!] KeyError: {}'.format(keyerror))
-                logger.error('Key Error encountered', exc_info=True)
-    return events
+    normalized_events = {}
+    for i in events.items():
+        if i in values_list:
+            normalized_events.append(i)
+            print(normalized_events)
+    
+    return normalized_events
 
 def grab_events(argv, calendars):
     '''
@@ -129,6 +124,7 @@ def grab_events(argv, calendars):
     current_date_TS = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
 
     for calendar in calendars:
+        logger.debug("[^] Collecting events from calendar {}".format(calendar))
         try:
             page_token = None              
             while True:
@@ -147,7 +143,6 @@ def grab_events(argv, calendars):
             print('The credentials have been revoked or expired, please re-run'
                 'the application to re-authorize.')
             logger.error('The credentials have been revoked or expired')
-
     return mapping
 
 def verify_user_exists(username):
