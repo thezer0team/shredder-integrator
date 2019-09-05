@@ -50,6 +50,9 @@ def grab_calendars(argv):
     '''
 
     # Authenticate and construct service.
+
+    print(argv)
+
     try:
         service, flags = sample_tools.init(
             argv, 'calendar', 'v3', __doc__, __file__,
@@ -100,6 +103,7 @@ def transform_events(events):
         'attendees'
         ]
     normalized_events = {}
+<<<<<<< HEAD
     for k, v in enumerate(events):
         for i in values_list:
             if i == k:

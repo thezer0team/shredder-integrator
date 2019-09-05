@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from google_calendar import grab_calendars
 from google_calendar import transform_events
 from google_calendar import grab_events
