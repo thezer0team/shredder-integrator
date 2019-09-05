@@ -100,10 +100,11 @@ def transform_events(events):
         'attendees'
         ]
     normalized_events = {}
-    for i in events.items():
-        if i in values_list:
-            normalized_events.append(i)
-            print(normalized_events)
+    for k, v in enumerate(events):
+        for i in values_list:
+            if i == k:
+                normalized_events[k] == v
+                print(normalized_events)
     
     return normalized_events
 
