@@ -12,9 +12,7 @@ import datetime
 import logging
 from time import strftime,gmtime
 import requests
-import pytest
 import pprint
-import json
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +40,7 @@ logger.addHandler(c_handler)
 logger.addHandler(f_handler)
 
 DEBUG_MODE = True
+
 
 def grab_calendars(argv):
     '''
@@ -103,14 +102,12 @@ def transform_events(events):
         'attendees'
         ]
     normalized_events = {}
-<<<<<<< HEAD
-    for k, v in enumerate(events):
-        for i in values_list:
-            if i == k:
-                normalized_events[k] == v
-                print(normalized_events)
-    
+
+    for value in values_list:
+        normalized_events.update({value: events.get(value, None)})
+
     return normalized_events
+
 
 def grab_events(argv, calendars):
     '''
@@ -150,11 +147,11 @@ def grab_events(argv, calendars):
             logger.error('The credentials have been revoked or expired')
     return mapping
 
+
 def verify_user_exists(username):
-    ''' 
-    Pseudo code to check if an API endpoint returns true
-    '''
+    ''' Pseudo code to check if an API endpoint returns true  '''
     pass
+
 
 def request_new_userID(email):
     '''
@@ -162,11 +159,13 @@ def request_new_userID(email):
     '''
     pass
 
+
 def verify_user_appcalID(userid):
     '''
     Function to verify if user has an existing AppCalID
     '''
     pass
+
 
 def request_new_appcalID(userid):
     '''
@@ -174,11 +173,13 @@ def request_new_appcalID(userid):
     '''
     pass
 
+
 def verify_platform_calendar(userid, appCalID):
     '''
     Function to verify this calendar exists and is associated with the appCalID
     '''
     pass
+
 
 def post_events(*args):
     '''
@@ -201,10 +202,11 @@ def post_events(*args):
         logger.error('Error - Status code for URL is {}'.format(post.status_code))
         return False
 
+
 if __name__ == '__main__':
     calendars = grab_calendars(sys.argv)
     events = grab_events(sys.argv, calendars)
     normalized_events = transform_events(events)
     pprint.pprint(normalized_events)
-    #pprint.pprint(events)
-    #post_events(events)
+    # pprint.pprint(events)
+    # post_events(events)

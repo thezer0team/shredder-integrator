@@ -13,3 +13,6 @@ __pycache__
 
 # Ignore Coverage
 .coverage
+
+# Ignore vscode settings
+.vscode/

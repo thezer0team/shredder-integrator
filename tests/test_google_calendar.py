@@ -1,12 +1,4 @@
-from google_calendar import grab_calendars
 from google_calendar import transform_events
-from google_calendar import grab_events
-from google_calendar import verify_platform_calendar
-from google_calendar import verify_user_appcalID
-from google_calendar import verify_user_exists
-from google_calendar import request_new_appcalID
-from google_calendar import request_new_userID
-from google_calendar import post_events
 
 
 test_dict = {
@@ -30,7 +22,7 @@ normalized_result = {
         "summary": "Test Summary",
         }
 
-def test_transform_events():
+
+def test_transform_events(events=test_dict):
     ''' Test data normalizer '''
-    result = transform_events(test_dict)
-    assert result == normalized_result
+    assert transform_events(test_dict) == normalized_result
