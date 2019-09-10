@@ -9,6 +9,7 @@ pytz = "*"
 requests = "*"
 google-api-python-client = "*"
 cerberus = "*"
+pytest-icdiff = "*"
 
 [dev-packages]
 "flake8" = "*"
