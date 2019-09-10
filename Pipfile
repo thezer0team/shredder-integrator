@@ -9,12 +9,12 @@ pytz = "*"
 requests = "*"
 google-api-python-client = "*"
 cerberus = "*"
-pytest-icdiff = "*"
 
 [dev-packages]
 "flake8" = "*"
-pytest-cov = "*"
 pytest = "*"
+pytest-cov = "*"
+pytest-icdiff = "*"
 
 [requires]
 python_version = "3.7"
