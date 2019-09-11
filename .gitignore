@@ -177,14 +177,4 @@ client_secrets.json
 # Ignore Log Files
 *.log
 
-# Ignore Pytest Cache
-#.pytest_cache
-#__pycache__
-
-# Ignore Coverage
-#.coverage
-
-# Ignore vscode settings
-#.vscode/
-
 # End of https://www.gitignore.io/api/python,windows,visualstudiocode
